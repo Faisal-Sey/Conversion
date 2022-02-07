@@ -6,7 +6,142 @@ import tkinter.font as font
 
 app = tk.Tk()
 app.title("Converter")
-app.geometry("900x500")
+app.geometry("1920x1080")
+
+
+dimensions = {
+    "Length": ["inch(in)", "centimetres(cm)", "foot(ft)", "yard(yd)", "millimetre(mm)",
+                       "metre(m)", "kilometre(km)", "microns(µm)", "amstrongs(Å)", "mile"],
+    
+    "Area": ["square metre(m²)", "square centimetre(cm²)", "square inch(in²)", "square foot(ft²)", "square yard(yd²)",
+                       "acre(acres)", "quart(qt)", "square kilometre(km²)", "hectares(ha)", "square mile(miles²)", "square millimetre(mm²)"],
+
+    "Volume": ["cubic metre(m³)", "cubic centimetre(cm³)", "cubic inch(in³)", "cubic foot(ft³)", "quart(qt)",
+                        "litres(l)", "millilitres(ml)", "U.S. gallon(gal)", "U.K. gallon(gal)", "Barrel(bbl)", "cubic decimetre(dm³)", "cubic millimetre(mm³)"],
+
+    "Temperature": ["Celcius(°C)", "Kelvin(K)", "Fahrenheit(°F)", "Rankine(°Ra)", "Réaumur(°Re)"],
+
+    "Mass": ["Milligram(mg)", "Decigram(dg)", "Centigram(Cg)", "Gram(g)", "Dekagram(dag)", "Hectogram(hg)",
+                       "Metric ton(t)", "kilogram(kg)", "Slug(slug)", "ounce(oz)", "pound(lb)"],
+
+    "Force": ["Newton", "dyne(dyn)", "grain-force(grf)", "gram-force(gf)", "poundal(pdl)", "ounce-force(ozf)",
+                       "pound-force(lbf)", "kilogram-force(kgf)", "kilopond(kp)", "sthène(sthène)", "kip(kip)", "tonne-force(tf)"],
+    
+    "Pressure": ["Pascal(Pa)", "bars(bar)", "megapascals(MPa)", "Kilopascals(kPa)", "hectopascal(hPa)", "millibar(mbar)", "nanobar(nbar)", "atmosphere(atm)", 
+                    "barye(ba)", "ft of H20(ft H20)", "in of Hg(in Hg)", "in of H20(in H20)", "mm of Hg(mm Hg)", "mm of H2O(mm H2O)", "ozf/in²(osi)", 
+                    "pieze(pz)", "lb/ft²(psf)", "lb/in²(psi)"],
+    
+    "Work and Energy": ["joule(J)", "calories(cal)", "kilocalories(kcal)", "kilojoules(kJ)", "electronvolt(eV)", "kilopondmetre(kp.m)",
+                       "kilowatt-hour(kWh)", "therm(therm)", "watt-hour(Wh)", "British Thermal Unit(Btu)", "Celsius heat unit(Chu)", "erg(erg)",
+                       "Hartree(Eh)", "quad(quad)", "rydberg(rydberg)", "specific fuel consumption(kgmp)", "thermochemical calorie(cal th)",
+                       "tonne of oil equivalent(toe)"],
+    
+    "Density": ["gram per cubic metre(g/m³)", "gram per cubic centimetre(g/cm³)", "kilogram per cubic metre(kg/m³)", "milligram per cubic metre(mg/m³)", "ounce to gallon(UK)", "ounce to gallon(US)",
+                       "pound to gallon(lb/UK gal)", "pound to gallon(lb/US gal)", "pound to cubic foot(lb/cu.ft)", "pound to cubic inch(lb/cu.in)", "pound to cubic yard(lb/cu.yd)", "slug to cubic foot(slug/ft³)"],
+
+    "Power": ["watt(W)", "kilowatts (kW)", "manpower", "abwatt (aW)", "air watt", "Btu per hour(Btu/h)",
+                       "Btu per minute(Btu/min)", "Btu per second(Btu/s)", "calories per hour(cal/h)",
+                       "calories per minute(cal/min)", "calories per second(cal/s)", "erg per second(erg/s)",
+                       "horse(ksi)", "horse(older definition)(ks)", "horsepower (HP)", "international watt(W int)",
+                       "kilocalories per hour(kcal/h)", "kilopond metres per second(kp.m/s)", "poncelet"
+                       "pound-force per second (lbf.ft/s)", "water horsepower(whp)"],
+
+    "Time": ["second(s)", "minutes (min)", "hours (h)", "day (d)", "millisecond (ms)", "month(month)",
+                       "week(week)", "gregorian year", "helek(hl)", "Julian year", "leap-year", "ordinary year",
+                       "sidereal day", "sidereal month", "sidereal year", "solar day", "svedberg(S)", "tropic year(a)"],
+    
+    "Speed": ["metre per second(m/s)", "kilometres per hour (km/h)", "foot per hour (ft/h)", "knot (kn)", "metre per minute (m/min)", "mile per hour(MPH)",
+                       "speed of light(c)", "admiralty knot", "mach (Ma)", "polednikova tercie"],
+
+    "Plane Angle": ["radian (rad)", "degrees (°)", "centigrade", "dilec", "grade (g)", "hora",
+                       "minute", "second", "delostrelecky", "matematical component(dc)"],
+    
+    "Angular Velocity": ["radian/second(rad/s)", "radian/day (rad/d)", "radian/hour (rad/h)", "radian/minute (rad/min)",
+                       "degree/day (°/d)", "degree/hour (°/h)", "degree/minute (°/min)", "degree/second (°/s)",
+                       "revolution/day (r/d)", "revolution/hour (r/h)", "revolution/minute (r/min)", "revolution/second (r/s)"],
+
+    "Acceleration": ["meter/square second(m/s²)", "decimeter/square second(dm/s²)", "kilometer/square second(km/s²)",
+                     "hectometer/square second(hm/s²)", "dekameter/square second(dam/s²)", "centimeter/square second(cm/s²)",
+                     "millimeter/square second(mm/s²)", "micrometer/square second(μm)", "nanometer/square second(nm/s²)",
+                     "picometer/square second(pm/s²)", "femtometer/square second(fm/s²)", "attometer/square second(am/s²)",
+                     "gal (Gal)", "galileo (Gal)", "mile/square second (mi/s²)", "yard/square second(yd/s²)",
+                       "foot/square second (ft/s²)", "inch/square second (in/s²)", "Acceleration of gravity (g)"],
+
+    "Moment": ["kilogram square meter(kg*m²)", "kilogram square centimeter(kg*cm²)",
+                       "kilogram square millimeter(kg*mm²)", "gram square centimeter(g*cm²)", "gram square millimeter(g*mm²)",
+                       "kilogram-force meter square second(kgfm*s²)",
+                       "kilogram-force centimeter square second(kgf*cm²)", "ounce square inch (oz*in²)",
+                       "ounce-force inch square second(ozf*in²)",
+                       "pound square foot (lb*ft²)", "pound-force foot square second(lbf*ft*s²)",
+                       "pound square inch (lb*in²)", "pound-force inch square second(lbf*in*s²)", "slug square foot(slug*ft²)"],
+    
+    "Specific Volume Converter": ["cubic meter/kilogram(m³/kg)", "cubic centimeter/gram(cm³/g)", "liter/kilogram (L/kg)",
+                       "liter/gram (L/g)", "cubic foot/kilogram (ft³/kg)", "cubic foot/pound (ft³/lb)",
+                       "gallon (US)/pound(gal/lb)", "gallon (UK)/pound(gal/lb)"],
+
+    "Fuel Efficiency to Mass": ["joule/kilogram (J/kg)", "kilojoule/kilogram (kJ/kg)", "calorie (IT)/gram (cal/g)",
+                       "calorie (th)/gram", "(cal (th)/g)", "Btu (IT)/pound (Btu/lb)", "Btu (th)/pound (Btu (th)/lb)",
+                       "kilogram/joule (kg/J)", "kilogram/kilojoule (kg/kJ)", "gram/calorie (IT) (g/cal)",
+                       "gram/calorie (th) (g/cal (th))", "pound/Btu (IT) (lb/Btu)", "pound/Btu (th) (lb/Btu (th))",
+                       "pound/horsepower/hour(lb/hp/h)", "gram/horsepower (metric)/hour", "gram/kilowatt/hour"],
+    
+    "Fuel Efficiency to Volume": ["joule/cubic meter (J/m³)", "joule/liter (J/L)", "mega joule/cubic meter(mJ/m³)",
+                       "kilojoule/cubic meter (kJ/m³)", "kilocalorie (IT)/cubic meter(kcal/m³)",
+                       "calorie (IT)/cubic centimeter(cal/cm³)", "therm/cubic foot (therm/ft³)",
+                       "therm/gallon (UK)", "Btu (IT)/cubic foot (Btu/ft³)", "Btu (th)/cubic foot(Btu/ft³)",
+                       "CHU/cubic foot (CHU/ft³)", "cubic meter/joule (m³/J)", "liter/joule (L/J)", "gallon (US)/horsepower", "gallon (US)/horsepower"],
+
+    "Kinematic Viscosity": ["square metre per second(m²/s)", "square centimetre per second(cm²/s)", "square millimetre per second(mm²/s)",
+                        "centistoke", "Engler", "ft²/s", "in²/s", "Redwood(1)", "Redwood(2)", "Saybolt Furol 122 °F", "Saybolt Furol 210 °F",
+                        "Saybolt Univ. 100 °F", "stoke"],
+    
+    "Flow rate": ["cubic metre per second(m³/s)", "cubic metre per day((m³/day)", "cubic metre per hour(m³/h)", "cubic metre per minute(m³/min)",
+                        "liter per second(L/s)", "svedrup(m³)"],
+
+    "Electrical Resistance": ["ohm (Ω)", "abohm(aΩ)", "statohm(sΩ)"],
+
+    "Dynamic Viscosity": ["newton second per square metre (N.s/m²)", "dyne second per square centimetre(dyne.s/cm²)", "gram per centimetre-second(g/cm.s)",
+                    "mN.s/m²", "poise", "pound.s/foot²", "pound/foot.s", "poundal.s/foot²", "slug/foot.s"],
+    
+    "Mass Flow Rate": ["kilogram/second (kg/s)", "gram/second (g/s)", "gram/minute (g/min)", "gram/hour (g/h)", "gram/day (g/d)", "milligram/minute (mg/min)",
+                         "milligram/hour (mg/h)", "milligram/day (mg/d)", "kilogram/minute (kg/min)", "kilogram/hour (kg/h)", "kilogram/day (kg/d)" "exagram/second (Eg/s)", 
+                         "petagram/second (Pg/s)", "teragram/second (Tg/s)", "gigagram/second (Gg/s)", 
+                        "megagram/second (Mg/s)", "kilogram/second (kg/s)", "gram/second (g/s)", "gram/minute (g/min)", "gram/hour (g/h)", "gram/day (g/d)", 
+                        "milligram/minute (mg/min)", "milligram/hour (mg/h)", "milligram/day (mg/d)", "kilogram/minute (kg/min)", "kilogram/hour (kg/h)", "kilogram/day (kg/d)", "exagram/second (Eg/s)", 
+                        "petagram/second (Pg/s)", "teragram/second (Tg/s)", "gigagram/second (Gg/s)", "megagram/second (Mg/s)", "hectogram/second (hg/s)", 
+                        "dekagram/second (dag/s)", "decigram/second (dg/s)", "centigram/second (cg/s)", "milligram/second (mg/s)", "microgram/second (µg/s)", 
+                        "ton (metric)/second (t/s)", "ton (metric)/minute (t/min)", "ton (metric)/hour (t/h)", "ton (metric)/day (t/d)", "ton (short)/hour (ton (US)/h)", 
+                        "pound/second (lb/s)", "pound/minute (lb/min)", "pound/hour (lb/h)", "pound/day (lb/d)"],
+    
+    "Molar Flow Rate": ["mol/second (mol/s)",  "examol/second (Emol/s)",  "petamol/second (Pmol/s)",  "teramol/second (Tmol/s)",  "gigamol/second (Gmol/s)",  "megamol/second (Mmol/s)",  "kilomol/second (kmol/s)", 
+                         "hectomol/second (hmol/s)",  "dekamol/second (damol/s)",  "decimol/second (dmol/s)",  "centimol/second (cmol/s)",  "millimol/second (mmol/s)",  "micromol/second (µmol/s)", 
+                         "nanomol/second (nmol/s)",  "picomol/second (pmol/s)","femtomol/second (fmol/s)",  "attomol/second (amol/s)",  "mol/minute (mol/min)",  "mol/hour (mol/h)",  "mol/day (mol/d)",  
+                         "millimol/minute (mmol/min)",  "millimol/hour (mmol/h)",  "millimol/day (mmol/d)",  "kilomol/minute (kmol/min)",  "kilomol/hour (kmol/h)",  "kilomol/day (kmol/d)"],
+    
+    "Molarity": ["mol/cubic meter (mol/m³)", "mol/liter (mol/L)", "mol/cubic centimeter(mol/cm³)", "mol/cubic millimeter(mol/mm³)", "kilomol/cubic meter(mol/m³)", "kilomol/liter (kmol/L)", "kilomol/cubic centimeter(kmol/cm³)", 
+                        "kilomol/cubic millimeter(kmol/mm³)", "millimol/cubic meter(mmol/m³)", "millimol/liter (mmol/L)", "millimol/cubic centimeter(mmol/cm³)", "millimol/cubic millimeter(mmol/mm³)"],
+
+    "Molality": ["kilogram/liter (kg/L)", "gram/liter (g/L)", "milligram/liter (mg/L)", "part/million (ppm)", "grain/US gallon (gr/gal(US))", 
+                        "grain/UK gallon (gr/gal(UK))", "pound/US gallon (lb/gal(US))", "pound/UK gallon (lb/gal(UK))", "pound/million gallon(US)",
+                         "pound/million gallon(UK)", "pound/cubic foot (lb/ft³)"],
+
+    "Surface Tension": ["Newton/metre (N/m)", "millinewton/metre (mN/m)", "gram-force/centimetre (grf/cm)", "dyne/centimetre (dyn/cm)", "erg/square millimetre (erg/mm²)", 
+                        "erg/square centimetre (erg/cm²)", "poundal/inch (pdl/in)", "pound-force/inch (lbf/in)"],
+    
+    "Specific Heat Capacity": ["joule/kilogram/K (J/(kg*K))", "joule/kilogram/°C (J/(kg*°C))", "joule/gram/°C (J/(g*°C))", "kilojoule/kilogram/K (kJ/(kg*K)", "kilojoule/kilogram/°C (kJ/(kg*°C)",
+                        "calorie (IT)/gram/°C (cal/(g*°C))", "calorie (IT)/gram/°F (cal/(g*°F))", "calorie (th)/gram/°C (cal/(g*°C))", "kilocalorie (th)/gram/°C (kcal/(g*°C))",
+                        "kilocalorie (IT)/gram/K (kcal/(g*K))", "kilocalorie (th)/gram/K (kcal/(g*K))", "kilocalorie (IT)/gram/°C (kcal/(g*°C))", "kilogram-force metre/kilogram/K (kgrf*m/(kg*K)",
+                        "pound-force foot/pound/°R (lbf*ft/(lb*°R))", "Btu (IT)/pound/°F (Btu(IT)/(lb*°F))", "Btu (th)/pound/°F (Btu(th)/(lb*°F))", "Btu (IT)/pound/°R (Btu(IT)/(lb*°R))", 
+                        "Btu (th)/pound/°R (Btu(th)/(lb*°R))", "Btu (IT)/pound/°C (Btu(IT)/(lb*°C))", "CHU/pound/°C (CHU/(lb*°C))"],
+
+    "Heat Transfer Coefficient": ["watt/square metre/K (W/(m²*K))", "watt/square metre/%b0C (W/(m²*%b0C))", "joule/second/square metre/K (J/(m²*K*s))", "calorie (IT)/second/square centimetre/%b0C (cal/(cm²*%b0C*s))", "kilocalorie (IT)/hour/square metre/%b0C (kcal/(m²*%b0C*h))",
+                        "kilocalorie (IT)/hour/square foot/%b0C (kcal/(ft²*%b0C*h))", "Btu (IT)/second/square foot/%b0F (Btu/(ft²*%b0F*s))", "Btu (th)/second/square foot/%b0F (Btu/(ft²*%b0F*s))", "Btu (IT)/hour/square foot/%b0F (Btu/(ft²*%b0F*h))",
+                        "Btu (th)/hour/square foot/%b0F (Btu/(ft²*%b0F*h))", "CHU/hour/square foot/%b0C (CHU/(ft²*%b0C*h))"],
+  
+}
+
+def converts(dimension, unit_from, unit_to):
+    pass
 
 
 def getab(drop):
